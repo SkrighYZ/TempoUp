@@ -42,5 +42,17 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setRingBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
 
         toggle = (ToggleButton) findViewById(R.id.toggle);
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggle);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    Toast.makeText(getApplicationContext(), "Toggle is on", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Toggle is off", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
