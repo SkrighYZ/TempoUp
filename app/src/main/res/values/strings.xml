@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TempoUp</string>
+    <string name="default_tempo_text_size">100 BPM</string>
+</resources>
