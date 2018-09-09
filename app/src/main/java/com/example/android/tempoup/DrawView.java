@@ -11,7 +11,6 @@ import android.view.View;
 public class DrawView extends View {
 
     private Paint paint = new Paint();
-    private int a;
 
     private void init() {
         paint.setColor(getResources().getColor(R.color.colorLineWhite));
