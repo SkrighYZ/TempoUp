@@ -29,13 +29,15 @@ public class MainActivity extends AppCompatActivity {
 
         seekBar = (CircularSeekBar) findViewById(R.id.seekBar);
         seekBar.setBarWidth(5);
-        seekBar.setMaxProgress(100);
-        seekBar.setProgress(50);
+        seekBar.setMaxProgress(38);
+        seekBar.setProgress(21);
         seekBar.invalidate();
         seekBar.setSeekBarChangeListener(new CircularSeekBar.OnSeekChangeListener() {
             @Override
-            public void onProgressChange(CircularSeekBar view, int newProgress) {
-                Log.d("Welcome", "Progress:" + view.getProgress() + "/" + view.getMaxProgress());
+            public void onProgressChange(CircularSeekBar seekBar, int newProgress) {
+                Log.d("Welcome", "Progress:" + seekBar.getProgress() + "/" + seekBar.getMaxProgress());
+                int tempo = getTempoFromProgress(seekBar.getProgress());
+                tempoTextView.setText(tempo + " BPM");
             }
         });
         seekBar.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
@@ -54,5 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     *
+     * @param progress seekBar value
+     * @return  corresponding tempo marking
+     */
+    private int getTempoFromProgress(int progress){
+        return Utils.getStandardMarkings(progress);
     }
 }
