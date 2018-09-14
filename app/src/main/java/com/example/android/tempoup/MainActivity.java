@@ -22,10 +22,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawView = (DrawView) findViewById(R.id.drawView);
-        // drawView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
 
         tempoTextView = (TextView) findViewById(R.id.tempoText);
-        // tempoTextView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
+        tempoTextView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
 
         seekBar = (CircularSeekBar) findViewById(R.id.seekBar);
         seekBar.setBarWidth(5);
@@ -66,5 +65,5 @@ public class MainActivity extends AppCompatActivity {
     private int getTempoFromProgress(int progress){
         return Utils.getStandardMarkings(progress);
     }
-    
+
 }

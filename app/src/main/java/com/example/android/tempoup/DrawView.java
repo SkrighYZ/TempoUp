@@ -18,6 +18,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
 
+    private int speed = 1;
+    private int poleX;
+
 
     private void init() {
         scalePaint.setColor(getResources().getColor(R.color.colorLineBlack));
@@ -27,6 +30,12 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
+
+        poleX = -1;
+    }
+
+    private void initPoleX(int canvasWidth){
+        poleX = canvasWidth / 2 - 10;
     }
 
     public DrawView(Context context) {
@@ -73,11 +82,11 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         }
     }
 
-    private void drawPole(Canvas canvas, int width, int height){
+    private void drawPole(Canvas canvas, int poleX, int height){
         int poleLength = 150;
-        canvas.drawLine(width / 2 - 6,
+        canvas.drawLine(poleX,
                 (height - poleLength) / 2,
-                width / 2 - 6,
+                poleX,
                 (height - poleLength) / 2 + poleLength,
                 polePaint);
     }
@@ -87,16 +96,16 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
         while(canDraw){
             if(!surfaceHolder.getSurface().isValid()){
-                Log.d("Check", "222222222222222222222");
                 continue;
             }
-            Log.d("Check", "3333333333333333333333333333333333");
-            canvas = surfaceHolder.lockCanvas();
 
+            canvas = surfaceHolder.lockCanvas();
             int width = canvas.getWidth();
             int height = canvas.getHeight();
+            if(poleX == -1) initPoleX(width);
             drawScale(canvas, width, height);
-            drawPole(canvas, width, height);
+            drawPole(canvas, poleX, height);
+            poleX += speed;
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -126,7 +135,6 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         resume();
-        Log.d("Check", "1111111111111111111111111111111");
     }
 
     @Override
@@ -138,4 +146,5 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         pause();
     }
+
 }
