@@ -20,7 +20,7 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
 
     private void init() {
-        scalePaint.setColor(getResources().getColor(R.color.colorLineWhite));
+        scalePaint.setColor(getResources().getColor(R.color.colorLineBlack));
         scalePaint.setStrokeWidth(4);
         polePaint.setColor(getResources().getColor(R.color.colorLineBlue));
         polePaint.setStrokeWidth(6);
@@ -42,14 +42,6 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     public DrawView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
-    }
-
-    @Override
-    public void onDraw(Canvas canvas){
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-        drawScale(canvas, width, height);
-        super.onDraw(canvas);
     }
 
     private void drawScale(Canvas canvas, int width, int height){
@@ -100,8 +92,10 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
             }
             Log.d("Check", "3333333333333333333333333333333333");
             canvas = surfaceHolder.lockCanvas();
+
             int width = canvas.getWidth();
             int height = canvas.getHeight();
+            drawScale(canvas, width, height);
             drawPole(canvas, width, height);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }

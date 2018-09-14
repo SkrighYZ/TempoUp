@@ -150,8 +150,8 @@ public class CircularSeekBar extends View {
         circleRing = new Paint();
 
         circleColor.setColor(Color.parseColor("#ff33b5e5")); // Set default progress color to holo blue.
-        innerColor.setColor(getResources().getColor(R.color.colorBackgroundGrey)); // Set default background color to Grey
-        circleRing.setColor(getResources().getColor(R.color.colorBackgroundWhite));// Set default background color to White
+        innerColor.setColor(getResources().getColor(R.color.colorBackgroundWhite)); // Set default background color to Grey
+        circleRing.setColor(getResources().getColor(R.color.colorLineGrey));// Set default background color to White
 
         circleColor.setAntiAlias(true);
         innerColor.setAntiAlias(true);

@@ -23,11 +23,12 @@
         android:layout_margin="5dp"
         android:text="@string/default_tempo_text_size"
         android:textSize="20sp"
-        android:textColor="@color/colorLineWhite"
+        android:textColor="@color/colorLineBlack"
         android:gravity="center"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="20dp"
+        android:background="@color/colorBackgroundWhite"/>
 
     <android.support.constraint.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

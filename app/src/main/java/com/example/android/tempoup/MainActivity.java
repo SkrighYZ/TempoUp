@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawView = (DrawView) findViewById(R.id.drawView);
-        drawView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
+        // drawView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
 
         tempoTextView = (TextView) findViewById(R.id.tempoText);
-        tempoTextView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
+        // tempoTextView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
 
         seekBar = (CircularSeekBar) findViewById(R.id.seekBar);
         seekBar.setBarWidth(5);
@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 tempoTextView.setText(tempo + " BPM");
             }
         });
-        seekBar.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGrey));
-        seekBar.setRingBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
+        seekBar.setBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
+        seekBar.setRingBackgroundColor(getResources().getColor(R.color.colorLineGrey));
 
         toggle = (ToggleButton) findViewById(R.id.toggle);
         ToggleButton toggle = (ToggleButton) findViewById(R.id.toggle);
