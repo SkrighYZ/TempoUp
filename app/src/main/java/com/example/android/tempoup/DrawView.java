@@ -93,7 +93,6 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     @Override
     public void run() {
-
         while(canDraw){
             if(!surfaceHolder.getSurface().isValid()){
                 continue;

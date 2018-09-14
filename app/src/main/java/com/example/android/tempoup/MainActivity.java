@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         seekBar = (CircularSeekBar) findViewById(R.id.seekBar);
         seekBar.setBarWidth(5);
         seekBar.setMaxProgress(38);
-        seekBar.setProgress(21);
+        seekBar.setProgress(0);
         seekBar.invalidate();
         seekBar.setSeekBarChangeListener(new CircularSeekBar.OnSeekChangeListener() {
             @Override
