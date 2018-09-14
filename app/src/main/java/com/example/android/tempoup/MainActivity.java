@@ -66,4 +66,15 @@ public class MainActivity extends AppCompatActivity {
     private int getTempoFromProgress(int progress){
         return Utils.getStandardMarkings(progress);
     }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
+
 }
