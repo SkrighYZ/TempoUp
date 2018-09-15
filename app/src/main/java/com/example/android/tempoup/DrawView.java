@@ -15,10 +15,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     private Thread thread = null;
     private boolean canDraw = false;
-    private Canvas canvas;
     private SurfaceHolder surfaceHolder;
 
-    private int speed = 1;
+    private int speed = 10;
     private int poleX;
 
 
@@ -53,8 +52,15 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         init();
     }
 
-    private void drawScale(Canvas canvas, int width, int height){
+    private void drawOn(Canvas canvas){
+        drawScale(canvas);
+        drawPole(canvas);
+    }
 
+    private void drawScale(Canvas canvas){
+
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
         int shortLineLength = 50;
         int midLineLength = 80;
         int longLineLength = 100;
@@ -82,7 +88,8 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         }
     }
 
-    private void drawPole(Canvas canvas, int poleX, int height){
+    private void drawPole(Canvas canvas){
+        int height = canvas.getHeight();
         int poleLength = 150;
         canvas.drawLine(poleX,
                 (height - poleLength) / 2,
@@ -93,19 +100,30 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     @Override
     public void run() {
+        Canvas canvas = null;
         while(canDraw){
-            if(!surfaceHolder.getSurface().isValid()){
-                continue;
+
+            try {
+                canvas = surfaceHolder.lockCanvas();
+                if (canvas == null) {
+                    Thread.sleep(1);
+                    continue;
+                }
+                int width = canvas.getWidth();
+                if (poleX == -1) initPoleX(width);
+                drawOn(canvas);
+                poleX += speed;
+
+            } catch(InterruptedException e){
+                Log.d("Thread", "Thread cannot sleep!!");
+                e.printStackTrace();
+
+            } finally{
+                if(canvas != null){
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
             }
 
-            canvas = surfaceHolder.lockCanvas();
-            int width = canvas.getWidth();
-            int height = canvas.getHeight();
-            if(poleX == -1) initPoleX(width);
-            drawScale(canvas, width, height);
-            drawPole(canvas, poleX, height);
-            poleX += speed;
-            surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 
