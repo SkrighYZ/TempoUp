@@ -17,7 +17,7 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     private boolean canDraw = false;
     private SurfaceHolder surfaceHolder;
 
-    private int speed = 10;
+    public int speed = 10;
     private int poleX;
 
 
