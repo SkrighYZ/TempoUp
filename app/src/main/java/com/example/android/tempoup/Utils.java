@@ -94,4 +94,8 @@ public class Utils {
         }
     }
 
+    public static int bpmToMilli(int bpm){
+        return 6000 / bpm;
+    }
+
 }
