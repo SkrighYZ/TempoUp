@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tempoTextView;
     CircularSeekBar seekBar;
     ToggleButton toggle;
+    SoundThread sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), "Toggle is on", Toast.LENGTH_SHORT).show();
+                    int tempo = getTempoFromProgress(seekBar.getProgress());
+                    Toast.makeText(getApplicationContext(), "Tempo: " + tempo, Toast.LENGTH_SHORT).show();
+                    sound = new SoundThread(getApplicationContext(), tempo);
+                    sound.play();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Toggle is off", Toast.LENGTH_SHORT).show();
+                    sound.pause();
                 }
             }
         });

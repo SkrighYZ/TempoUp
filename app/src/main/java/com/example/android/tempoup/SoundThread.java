@@ -11,18 +11,22 @@ public class SoundThread extends Thread {
     private boolean canPlay;
     private int timeInterval; // in milliseconds
 
-    public SoundThread(Context context, int bpm){
+    public SoundThread(Context context, int bpm) {
         this.context = context;
         mp = MediaPlayer.create(context, R.raw.tick);
         mp.setLooping(true);
         timeInterval = Utils.bpmToMilli(bpm);
+        Log.d("SoundThread", "Time interval = " + Integer.toString(timeInterval));
     }
 
     @Override
     public void run(){
         while(canPlay){
             mp.start();
+            Log.d("SoundThread", "Sound resumed.");
             try{
+                Log.d("SoundThread", "I'm trying to sleep");
+                mp.pause();
                 Thread.sleep(timeInterval);
             } catch (InterruptedException e){
                 Log.d("SoundThread", "Thread Cannot Sleep.");
@@ -47,6 +51,7 @@ public class SoundThread extends Thread {
                 e.printStackTrace();
             }
         }
+        mp.stop();
         mp.release();
     }
 }
