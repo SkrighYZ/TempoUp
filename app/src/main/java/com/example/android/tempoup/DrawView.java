@@ -1,6 +1,5 @@
 package com.example.android.tempoup;
 
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,9 +15,14 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     private Thread thread = null;
     private boolean canDraw = false;
     private SurfaceHolder surfaceHolder;
+    private Canvas canvas;
 
-    public int speed = 10;
     private int poleX;
+    private int bpm;
+    private int speed = 10;
+
+    private int screenWidth = 0;
+    private int screenHeight = 0;
 
 
     private void init() {
@@ -30,11 +34,12 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        poleX = -1;
+        initPoleX();
     }
 
-    private void initPoleX(int canvasWidth){
-        poleX = canvasWidth / 2 - 10;
+    private void initPoleX(){
+        poleX = screenWidth / 2;
+        Log.d("DrawView", "poleX = " + poleX);
     }
 
     public DrawView(Context context) {
@@ -42,25 +47,16 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         init();
     }
 
-    public DrawView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public DrawView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
-
-    private void drawOn(Canvas canvas){
+    private void draw(){
+        canvas.drawColor(getResources().getColor(R.color.colorBackgroundWhite));
         drawScale(canvas);
         drawPole(canvas);
     }
 
     private void drawScale(Canvas canvas){
 
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
+        int width = screenWidth;
+        int height = screenHeight;
         int shortLineLength = 50;
         int midLineLength = 80;
         int longLineLength = 100;
@@ -89,7 +85,7 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     }
 
     private void drawPole(Canvas canvas){
-        int height = canvas.getHeight();
+        int height = screenHeight;
         int poleLength = 150;
         canvas.drawLine(poleX,
                 (height - poleLength) / 2,
@@ -100,30 +96,36 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     @Override
     public void run() {
-        Canvas canvas = null;
-        while(canDraw){
+        long startTime = System.currentTimeMillis();
+        while(canDraw) {
 
-            try {
-                canvas = surfaceHolder.lockCanvas();
-                if (canvas == null) {
+            canvas = surfaceHolder.lockCanvas();
+            if (canvas == null) {
+                try {
                     Thread.sleep(1);
                     continue;
-                }
-                int width = canvas.getWidth();
-                if (poleX == -1) initPoleX(width);
-                drawOn(canvas);
-                poleX += speed;
-
-            } catch(InterruptedException e){
-                Log.d("Thread", "Thread cannot sleep!!");
-                e.printStackTrace();
-
-            } finally{
-                if(canvas != null){
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
+            if(poleX == 0){
+                poleX = screenWidth / 2;
+            }
+            draw();
+            poleX += speed;
+            long endTime = System.currentTimeMillis();
+            long deltaTime = endTime - startTime;
 
+            if (deltaTime < 200) {
+                try {
+                    Thread.sleep(200 - deltaTime);
+                } catch (InterruptedException e) {
+                    Log.e("DrawView", e.getMessage());
+                }
+
+            }
+
+            surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 
@@ -149,8 +151,11 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         thread.start();
     }
 
+
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        screenWidth = getWidth();
+        screenHeight = getHeight();
         resume();
     }
 
@@ -162,6 +167,14 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         pause();
+    }
+
+    public void setBpm(int bpm){
+        this.bpm = bpm;
+    }
+
+    public int getBpm(){
+        return bpm;
     }
 
 }

@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawView drawView;
+    LinearLayout canvasLayout;
     TextView tempoTextView;
     CircularSeekBar seekBar;
     ToggleButton toggle;
@@ -22,7 +23,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawView = (DrawView) findViewById(R.id.drawView);
+        canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
+        DrawView drawView = new DrawView(getApplicationContext());
+        drawView.setBpm(40);
+        canvasLayout.addView(drawView);
 
         tempoTextView = (TextView) findViewById(R.id.tempoText);
         tempoTextView.setBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     sound.play();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Toggle is off", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Stopped", Toast.LENGTH_SHORT).show();
                     sound.pause();
                 }
             }

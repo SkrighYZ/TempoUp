@@ -24,7 +24,6 @@ public class SoundThread extends Thread {
         while(canPlay){
             mp.seekTo(0);
             mp.start();
-            Log.d("SoundThread", "Sound resumed.");
             try{
                 Log.d("SoundThread", "I'm trying to sleep");
                 Thread.sleep(timeInterval);

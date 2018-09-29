@@ -9,12 +9,13 @@
     android:background="@color/colorBackgroundWhite"
     tools:context=".MainActivity">
 
-    <com.example.android.tempoup.DrawView
-        android:id="@+id/drawView"
+    <LinearLayout
+        android:id="@+id/canvasLayout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_gravity="center"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:orientation="vertical"/>
 
     <TextView
         android:id="@+id/tempoText"
