@@ -22,14 +22,21 @@ public class SoundThread extends Thread {
     @Override
     public void run(){
         while(canPlay){
+            long startTime = System.currentTimeMillis();
             mp.seekTo(0);
             mp.start();
-            try{
-                Log.d("SoundThread", "I'm trying to sleep");
-                Thread.sleep(timeInterval);
-            } catch (InterruptedException e){
-                Log.d("SoundThread", "Thread Cannot Sleep.");
-                e.printStackTrace();
+            long endTime = System.currentTimeMillis();
+            long deltaTime = endTime - startTime;
+            Log.d("SoundThread", "Trying to sleep." + deltaTime);
+            if (deltaTime < timeInterval){
+                Log.d("SoundThread", "Trying to sleep." + deltaTime);
+                try{
+                    Log.d("SoundThread", "Trying to sleep." + deltaTime);
+                    Thread.sleep(timeInterval - deltaTime);
+                } catch (InterruptedException e){
+                    Log.d("SoundThread", "Thread Cannot Sleep.");
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -51,6 +58,8 @@ public class SoundThread extends Thread {
             }
         }
         mp.stop();
+        mp.reset();
         mp.release();
+        mp = null;
     }
 }

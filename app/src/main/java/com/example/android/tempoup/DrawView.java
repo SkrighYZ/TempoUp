@@ -19,10 +19,14 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     private int poleX;
     private int bpm;
-    private int speed = 10;
+    private int speed;
+    private int timeInterval;
+    private int countTime;
 
     private int screenWidth = 0;
     private int screenHeight = 0;
+
+
 
 
     private void init() {
@@ -34,7 +38,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        initPoleX();
+        speed = 1;
+        timeInterval = 0;
+        countTime = 0;
     }
 
     private void initPoleX(){
@@ -45,6 +51,15 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     public DrawView(Context context) {
         super(context);
         init();
+    }
+
+    private void initCanvas(){
+        initPoleX();
+        canvas = surfaceHolder.lockCanvas();
+        canvas.drawColor(getResources().getColor(R.color.colorBackgroundWhite));
+        drawScale(canvas);
+        drawPole(canvas);
+        surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     private void draw(){
@@ -96,10 +111,11 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
         while(canDraw) {
+            long startTime = System.currentTimeMillis();
 
             canvas = surfaceHolder.lockCanvas();
+
             if (canvas == null) {
                 try {
                     Thread.sleep(1);
@@ -108,17 +124,16 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
                     e.printStackTrace();
                 }
             }
-            if(poleX == 0){
-                poleX = screenWidth / 2;
-            }
+
+            update();
             draw();
-            poleX += speed;
+
             long endTime = System.currentTimeMillis();
             long deltaTime = endTime - startTime;
 
-            if (deltaTime < 200) {
+            if (deltaTime < timeInterval) {
                 try {
-                    Thread.sleep(200 - deltaTime);
+                    Thread.sleep(timeInterval - deltaTime);
                 } catch (InterruptedException e) {
                     Log.e("DrawView", e.getMessage());
                 }
@@ -127,6 +142,28 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    private void update(){
+        timeInterval = Utils.bpmToMilli(bpm) / 5;
+        if(speed == 1){
+            if(countTime >= 5){
+                poleX = screenWidth * 5 / 6;
+                countTime = 0;
+                speed = -1;
+                return;
+            }
+            poleX += (screenWidth * 5 / 6 - poleX) / (5 - countTime);
+        } else if(speed == -1){
+            if(countTime >= 5){
+                poleX = screenWidth / 6;
+                countTime = 0;
+                speed = 1;
+                return;
+            }
+            poleX -= (poleX - screenWidth / 6) / (5 - countTime);
+        }
+        countTime++;
     }
 
     public void pause(){
@@ -156,7 +193,7 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         screenWidth = getWidth();
         screenHeight = getHeight();
-        resume();
+        initCanvas();
     }
 
     @Override
@@ -166,7 +203,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        pause();
+        if(thread != null){
+            pause();
+        }
     }
 
     public void setBpm(int bpm){

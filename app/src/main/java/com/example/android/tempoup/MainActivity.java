@@ -13,6 +13,7 @@ import android.widget.ToggleButton;
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout canvasLayout;
+    DrawView drawView;
     TextView tempoTextView;
     CircularSeekBar seekBar;
     ToggleButton toggle;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
-        DrawView drawView = new DrawView(getApplicationContext());
+        drawView = new DrawView(getApplicationContext());
         drawView.setBpm(40);
         canvasLayout.addView(drawView);
 
@@ -57,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Tempo: " + tempo, Toast.LENGTH_SHORT).show();
                     sound = new SoundThread(getApplicationContext(), tempo);
                     sound.play();
+                    drawView.setBpm(tempo);
+                    drawView.resume();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Stopped", Toast.LENGTH_SHORT).show();
                     sound.pause();
+                    drawView.pause();
                 }
             }
         });
