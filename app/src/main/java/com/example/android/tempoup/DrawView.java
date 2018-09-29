@@ -44,7 +44,7 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     }
 
     private void initPoleX(){
-        poleX = screenWidth / 2;
+        poleX = screenWidth / 2 - 8;
         Log.d("DrawView", "poleX = " + poleX);
     }
 
@@ -145,23 +145,23 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     }
 
     private void update(){
-        timeInterval = Utils.bpmToMilli(bpm) / 5;
+        timeInterval = Utils.bpmToMilli(bpm) / 10;
         if(speed == 1){
-            if(countTime >= 5){
-                poleX = screenWidth * 5 / 6;
+            if(countTime >= 9){
+                poleX = screenWidth * 5 / 6 - 15;
                 countTime = 0;
                 speed = -1;
                 return;
             }
-            poleX += (screenWidth * 5 / 6 - poleX) / (5 - countTime);
+            poleX += (screenWidth * 5 / 6 - poleX) / (10 - countTime);
         } else if(speed == -1){
-            if(countTime >= 5){
+            if(countTime >= 9){
                 poleX = screenWidth / 6;
                 countTime = 0;
                 speed = 1;
                 return;
             }
-            poleX -= (poleX - screenWidth / 6) / (5 - countTime);
+            poleX -= (poleX - screenWidth / 6) / (10 - countTime);
         }
         countTime++;
     }
@@ -179,6 +179,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         }
 
         thread = null;
+
+        initPoleX();
+        initCanvas();
 
     }
 
