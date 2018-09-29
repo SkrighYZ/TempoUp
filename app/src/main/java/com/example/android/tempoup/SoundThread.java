@@ -27,11 +27,9 @@ public class SoundThread extends Thread {
             mp.start();
             long endTime = System.currentTimeMillis();
             long deltaTime = endTime - startTime;
-            Log.d("SoundThread", "Trying to sleep." + deltaTime);
             if (deltaTime < timeInterval){
-                Log.d("SoundThread", "Trying to sleep." + deltaTime);
                 try{
-                    Log.d("SoundThread", "Trying to sleep." + deltaTime);
+                    Log.d("SoundThread", "Trying to sleep.");
                     Thread.sleep(timeInterval - deltaTime);
                 } catch (InterruptedException e){
                     Log.d("SoundThread", "Thread Cannot Sleep.");
