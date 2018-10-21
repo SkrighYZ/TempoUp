@@ -26,6 +26,8 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     private int screenWidth = 0;
     private int screenHeight = 0;
 
+    private int refreshSpeed = 10;
+
 
 
 
@@ -145,23 +147,23 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
     }
 
     private void update(){
-        timeInterval = Utils.bpmToMilli(bpm) / 10;
+        timeInterval = Utils.bpmToMilli(bpm) / refreshSpeed;
         if(speed == 1){
-            if(countTime >= 9){
+            if(countTime >= refreshSpeed - 1){
                 poleX = screenWidth * 5 / 6 - 15;
                 countTime = 0;
                 speed = -1;
                 return;
             }
-            poleX += (screenWidth * 5 / 6 - poleX) / (10 - countTime);
+            poleX += (screenWidth * 5 / 6 - poleX) / (refreshSpeed - countTime);
         } else if(speed == -1){
-            if(countTime >= 9){
+            if(countTime >= refreshSpeed - 1){
                 poleX = screenWidth / 6;
                 countTime = 0;
                 speed = 1;
                 return;
             }
-            poleX -= (poleX - screenWidth / 6) / (10 - countTime);
+            poleX -= (poleX - screenWidth / 6) / (refreshSpeed - countTime);
         }
         countTime++;
     }
@@ -213,6 +215,9 @@ public class DrawView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     public void setBpm(int bpm){
         this.bpm = bpm;
+        if(bpm < 50) refreshSpeed = 20;
+        else if(bpm < 60) refreshSpeed = 15;
+        else refreshSpeed = 10;
     }
 
     public int getBpm(){
